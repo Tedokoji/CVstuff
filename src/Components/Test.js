@@ -1,30 +1,31 @@
 import './SCSSs/Test.scss'
-import  {useState, useLayoutEffect} from 'react'
-import axios from 'axios'
-
-function Test() {
-    function GET(){
-      axios.get('http://localhost:3000/logininfo')
-      .then(res=>setInfo(res))
-    }
-     const [info,setInfo] = useState([])
-     useLayoutEffect(()=>{
-        
-        GET()
-    
-        
-     },[])
-    return (
-        <div>
-          {
-              info.map(e=>{
-                return(
-                    <h5 key={e.id} >{e.name}</h5>
-                )
-              })
-          }
-        </div>
+import { connect } from 'react-redux';
+import {buyCake,buyIcecream} from './Redux/Actions'
+function Test(props) {
+  
+  
+  
+  return (
+    <div className="Counter">
+          <h1>{props.cakes}</h1>
+          <h1>{props.icecreams}</h1>
+          <div>
+          <button onClick={props.buyCake} > buy cake </button>
+          <button onClick={props.buyIcecream} > buy icecreams </button>
+          </div>
+    </div>
     )
-}
-
-export default Test
+  }
+ const dispatchtoprops  = (dispatch) => {
+   return{
+    buyCake: ()=>{dispatch(buyCake())},
+    buyIcecream: ()=>{dispatch(buyIcecream())}
+   }
+ }
+ const statetoprops = (state)=>{
+   return{
+    cakes: state.cakes,
+    icecreams: state.icecreams
+   }
+ }
+export default connect(statetoprops,dispatchtoprops)(Test)
